@@ -1,0 +1,7 @@
+.noteCard {
+  background-color: rgb(255, 218, 224);
+}
+
+.cardBody {
+  white-space: pre-line;
+}
