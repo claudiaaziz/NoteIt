@@ -5,21 +5,33 @@ import { NoteInput } from '../network/notes_api';
 import * as NotesApi from '../network/notes_api';
 
 interface NoteFormProps {
+  noteToEdit?: Note;
   onDismiss: () => void;
   onNoteSaved: (note: Note) => void;
 }
 
-const NoteForm = ({ onDismiss, onNoteSaved }: NoteFormProps) => {
+const NoteForm = ({ noteToEdit, onDismiss, onNoteSaved }: NoteFormProps) => {
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<NoteInput>();
+  } = useForm<NoteInput>({
+    defaultValues: {
+      title: noteToEdit?.title || '',
+      body: noteToEdit?.body || ''
+    }
+  });
 
   async function onSubmit(input: NoteInput) {
     try {
-      const noteRes = await NotesApi.createNote(input);
-      onNoteSaved(noteRes);
+      let noteRes: Note;
+
+      if (noteToEdit) {
+        noteRes = await NotesApi.updateNote(noteToEdit._id, input)
+      } else {
+        noteRes = await NotesApi.createNote(input);
+      }
+      onNoteSaved(noteRes)
     } catch (error) {
       console.error(error);
       alert(error);
@@ -29,7 +41,7 @@ const NoteForm = ({ onDismiss, onNoteSaved }: NoteFormProps) => {
   return (
     <Modal show onHide={onDismiss}>
       <Modal.Header closeButton>
-        <Modal.Title>Add Note</Modal.Title>
+        <Modal.Title>{noteToEdit?._id ? 'Edit Note' : 'Add Note'}</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
