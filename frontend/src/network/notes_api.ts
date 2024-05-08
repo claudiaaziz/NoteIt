@@ -13,7 +13,7 @@ async function fetchData(input: RequestInfo, init?: RequestInit) {
   }
 }
 
-export async function getLoggedInUser(): Promise<User> {
+export async function getSessionUser(): Promise<User> {
   const res = await fetchData('/api/users', { method: 'GET' });
   return res.json();
 }
