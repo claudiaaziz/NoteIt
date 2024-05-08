@@ -1,8 +1,9 @@
 import { Button, Form, Modal } from 'react-bootstrap';
-import { Note } from '../models/notes';
+import { Note } from '../../models/notes';
 import { useForm } from 'react-hook-form';
-import { NoteInput } from '../network/notes_api';
-import * as NotesApi from '../network/notes_api';
+import { NoteInput } from '../../network/notes_api';
+import * as NotesApi from '../../network/notes_api';
+import TextInputField from '../form/TextInputField';
 
 interface NoteFormProps {
   noteToEdit?: Note;
@@ -18,8 +19,8 @@ const NoteForm = ({ noteToEdit, onDismiss, onNoteSaved }: NoteFormProps) => {
   } = useForm<NoteInput>({
     defaultValues: {
       title: noteToEdit?.title || '',
-      body: noteToEdit?.body || ''
-    }
+      body: noteToEdit?.body || '',
+    },
   });
 
   async function onSubmit(input: NoteInput) {
@@ -27,11 +28,11 @@ const NoteForm = ({ noteToEdit, onDismiss, onNoteSaved }: NoteFormProps) => {
       let noteRes: Note;
 
       if (noteToEdit) {
-        noteRes = await NotesApi.updateNote(noteToEdit._id, input)
+        noteRes = await NotesApi.updateNote(noteToEdit._id, input);
       } else {
         noteRes = await NotesApi.createNote(input);
       }
-      onNoteSaved(noteRes)
+      onNoteSaved(noteRes);
     } catch (error) {
       console.error(error);
       alert(error);
@@ -46,27 +47,23 @@ const NoteForm = ({ noteToEdit, onDismiss, onNoteSaved }: NoteFormProps) => {
 
       <Modal.Body>
         <Form id='addNoteForm' onSubmit={handleSubmit(onSubmit)}>
-          <Form.Group className='mb-3'>
-            <Form.Label>Title</Form.Label>
-            <Form.Control
-              type='text'
-              placeholder='Title'
-              isInvalid={!!errors.title}
-              {...register('title', { required: 'Title is Required' })}
-            />
-            <Form.Control.Feedback type='invalid'>
-              {errors.title?.message}
-            </Form.Control.Feedback>
-          </Form.Group>
-          <Form.Group className='mb-3'>
-            <Form.Label>Body</Form.Label>
-            <Form.Control
-              as='textarea'
-              rows={5}
-              placeholder='Body'
-              {...register('body')}
-            />
-          </Form.Group>
+          <TextInputField
+            name='title'
+            label='Title'
+            type='text'
+            placeholder='Title'
+            register={register}
+            registerOptions={{ required: 'Title is Required' }}
+            error={errors.title}
+          />
+          <TextInputField
+            name='body'
+            label='Body'
+            as='textarea'
+            placeholder='Body'
+            register={register}
+            rows={5}
+          />
         </Form>
       </Modal.Body>
 

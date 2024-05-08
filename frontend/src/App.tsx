@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react';
 import { Note as NoteModel } from './models/notes';
-import Note from './components/Note';
+import Note from './components/notes/Note';
 import { Button, Col, Container, Row, Spinner } from 'react-bootstrap';
 import styles from './styles/NotePage.module.css';
 import styleUtils from './styles/utils.module.css';
 import * as NotesApi from './network/notes_api';
-import NoteForm from './components/NoteForm';
+import NoteForm from './components/notes/NoteForm';
 import { FaPlus } from 'react-icons/fa';
+import SignUpModal from './components/session/SignUpModal';
+import SignInModal from './components/session/SignInModal';
+import NavBar from './components/navbar/NavBar';
 
 function App() {
   const [notes, setNotes] = useState<NoteModel[]>([]);
@@ -58,49 +61,63 @@ function App() {
   );
 
   return (
-    <Container className={styles.notesPage}>
-      <Button
-        onClick={() => setIsNoteFormVisible(true)}
-        className={`mb-4 ${styleUtils.blockCenter} ${styleUtils.flexCenter}`}
-      >
-        <FaPlus />
-        Add New Note
-      </Button>
-      {notesLoading && <Spinner animation='border' variant='primary' />}
-      {showNotesLoadingError && (
-        <p>Something went wrong. Please refresh the page.</p>
-      )}
-      {!notesLoading && !showNotesLoadingError && (
-        <>
-          {notes.length > 0 ? notesGrid : <p>You don't have any notes yet</p>}
-        </>
-      )}
-      {isNoteFormVisible && (
-        <NoteForm
-          onDismiss={() => setIsNoteFormVisible(false)}
-          onNoteSaved={(newNote) => {
-            setNotes([...notes, newNote]);
-            setIsNoteFormVisible(false);
-          }}
-        />
-      )}
-      {noteToEdit && (
-        <NoteForm
-          noteToEdit={noteToEdit}
-          onDismiss={() => setNoteToEdit(null)}
-          onNoteSaved={(updatedNote) => {
-            setNotes(
-              notes.map((existingNote) =>
-                existingNote._id === updatedNote._id
-                  ? updatedNote
-                  : existingNote
-              )
-            );
-            setNoteToEdit(null);
-          }}
-        />
-      )}
-    </Container>
+    <div>
+      <NavBar
+        sessionUser={null}
+        onSignInClicked={() => {}}
+        onSignOutSuccessful={() => {}}
+        onSignUpClicked={() => {}}
+      />
+      <Container className={styles.notesPage}>
+        <Button
+          onClick={() => setIsNoteFormVisible(true)}
+          className={`mb-4 ${styleUtils.blockCenter} ${styleUtils.flexCenter}`}
+        >
+          <FaPlus />
+          Add New Note
+        </Button>
+        {notesLoading && <Spinner animation='border' variant='primary' />}
+        {showNotesLoadingError && (
+          <p>Something went wrong. Please refresh the page.</p>
+        )}
+        {!notesLoading && !showNotesLoadingError && (
+          <>
+            {notes.length > 0 ? notesGrid : <p>You don't have any notes yet</p>}
+          </>
+        )}
+        {isNoteFormVisible && (
+          <NoteForm
+            onDismiss={() => setIsNoteFormVisible(false)}
+            onNoteSaved={(newNote) => {
+              setNotes([...notes, newNote]);
+              setIsNoteFormVisible(false);
+            }}
+          />
+        )}
+        {noteToEdit && (
+          <NoteForm
+            noteToEdit={noteToEdit}
+            onDismiss={() => setNoteToEdit(null)}
+            onNoteSaved={(updatedNote) => {
+              setNotes(
+                notes.map((existingNote) =>
+                  existingNote._id === updatedNote._id
+                    ? updatedNote
+                    : existingNote
+                )
+              );
+              setNoteToEdit(null);
+            }}
+          />
+        )}
+        {false && (
+          <SignUpModal onDismiss={() => {}} onSignUpSuccessful={() => {}} />
+        )}
+        {false && (
+          <SignInModal onDismiss={() => {}} onSignInSuccessful={() => {}} />
+        )}
+      </Container>
+    </div>
   );
 }
 
