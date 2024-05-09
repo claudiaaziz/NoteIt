@@ -1,5 +1,3 @@
-import { Button } from "react-bootstrap"
-
 interface SignedOutViewProps {
   onSignUpClicked: () => void
   onSignInClicked: () => void
@@ -8,8 +6,8 @@ interface SignedOutViewProps {
 const SignedOutView = ({ onSignInClicked, onSignUpClicked }: SignedOutViewProps) => {
   return (
     <>
-      <Button onClick={onSignUpClicked}>Sign Up</Button>
-      <Button onClick={onSignInClicked}>Sign In</Button>
+      <span style={{marginRight: '20px'}} className="pointer" onClick={onSignUpClicked}>Sign Up</span>
+      <span onClick={onSignInClicked} className="pointer">Sign In</span>
     </>
   )
 }

@@ -39,7 +39,7 @@ const SignInModal = ({ onDismiss, onSignInSuccessful }: SignInModalProps) => {
 
   return (
     <Modal show onHide={onDismiss}>
-      <Modal.Header>
+      <Modal.Header closeButton>
         <Modal.Title>Sign In</Modal.Title>
       </Modal.Header>
 
@@ -68,6 +68,7 @@ const SignInModal = ({ onDismiss, onSignInSuccessful }: SignInModalProps) => {
             type='submit'
             disabled={isSubmitting}
             className={styleUtils.width100}
+            id='button'
           >
             Sign In
           </Button>

@@ -1,13 +1,10 @@
-import { Button } from 'react-bootstrap';
-import { User } from '../../models/user';
 import * as NotesApi from '../../network/notes_api';
 
 interface SignedInViewProps {
-  user: User;
   onSignOutSuccessful: () => void;
 }
 
-const SignedInView = ({ user, onSignOutSuccessful }: SignedInViewProps) => {
+const SignedInView = ({ onSignOutSuccessful }: SignedInViewProps) => {
   async function signOut() {
     try {
       await NotesApi.signOut()
@@ -19,7 +16,7 @@ const SignedInView = ({ user, onSignOutSuccessful }: SignedInViewProps) => {
   }
 
   return (
-    <Button onClick={signOut}>Sign Out</Button>
+    <span onClick={signOut} className='pointer'>Sign Out</span>
   );
 };
 

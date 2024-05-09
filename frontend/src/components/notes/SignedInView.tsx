@@ -62,6 +62,7 @@ const SignedInView = () => {
       <Button
         onClick={() => setIsNoteFormVisible(true)}
         className={`mb-4 ${styleUtils.blockCenter} ${styleUtils.flexCenter}`}
+        id="button"
       >
         <FaPlus />
         Add New Note

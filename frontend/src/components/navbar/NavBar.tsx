@@ -3,6 +3,7 @@ import { Container, Nav, Navbar } from 'react-bootstrap';
 import { User } from '../../models/user';
 import SignedInView from './SignedInView';
 import SignedOutView from './SignedOutView';
+import styles from '../../styles/NavBar.module.css';
 
 interface NavBarProps {
   sessionUser: User | null;
@@ -18,22 +19,21 @@ const NavBar = ({
   onSignUpClicked,
 }: NavBarProps) => {
   return (
-    <Navbar bg='primary' variant='dark' expand='sm' sticky='top'>
+    <Navbar variant='dark' expand='sm' sticky='top' className={styles.bg}>
       <Container>
-        <Navbar.Brand as={Link} to='/'>Notes App</Navbar.Brand>
+        <Navbar.Brand as={Link} to='/' style={{ color: 'black' }}>
+          Notes App
+        </Navbar.Brand>
         <Navbar.Toggle aria-controls='main-navbar' />
         <Navbar.Collapse id='main-navbar'>
           <Nav>
-            <Nav.Link as={Link} to='/privacy'>
+            <Nav.Link as={Link} to='/privacy' style={{ color: 'black' }}>
               Privacy
             </Nav.Link>
           </Nav>
           <Nav className='ms-auto'>
             {sessionUser ? (
-              <SignedInView
-                user={sessionUser}
-                onSignOutSuccessful={onSignOutSuccessful}
-              />
+              <SignedInView onSignOutSuccessful={onSignOutSuccessful} />
             ) : (
               <SignedOutView
                 onSignInClicked={onSignInClicked}

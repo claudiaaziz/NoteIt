@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { NoteInput } from '../../network/notes_api';
 import * as NotesApi from '../../network/notes_api';
 import TextInputField from '../form/TextInputField';
+import styles from '../../styles/utils.module.css'
 
 interface NoteFormProps {
   noteToEdit?: Note;
@@ -68,7 +69,7 @@ const NoteForm = ({ noteToEdit, onDismiss, onNoteSaved }: NoteFormProps) => {
       </Modal.Body>
 
       <Modal.Footer>
-        <Button type='submit' form='addNoteForm' disabled={isSubmitting}>
+        <Button type='submit' form='addNoteForm' disabled={isSubmitting} id='button' className={styles.width100}>
           Save
         </Button>
       </Modal.Footer>
